@@ -292,7 +292,7 @@ class Route
 			throw new UnknownControllerMethod( $namespace, $methodName );
 		}
 
-		return $this->runMiddlewares( $matches, fn() =>
+		return $this->runMiddlewares( fn() =>
 			$controller->{ $methodName }(
 				...$this->resolveArguments(
 					$this->getParamReflections( $controller, $methodName ),
@@ -309,11 +309,10 @@ class Route
 	 * This method will run the registered middlewares and if there are no
 	 * middlewares registered, it will execute the given final action.
 	 *
-	 * @param Matches $matches The matches found in the given path.
 	 * @param Closure $finalAction The final action to be executed.
 	 * @return mixed The result returned by the final action.
 	 */
-	public function runMiddlewares( Matches $matches, Closure $finalAction ): mixed
+	public function runMiddlewares( Closure $finalAction ): mixed
 	{
 		if( ! $this->middlewares )
 		{
@@ -323,7 +322,7 @@ class Route
 		return $this
 			->router
 			->resolveMiddlewares( $this->middlewares )[ 0 ]
-			->run( $matches, $finalAction );
+			->run( $finalAction );
 	}
 
 	/**
