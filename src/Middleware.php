@@ -46,23 +46,26 @@ class Middleware
 	/**
 	 * Runs the represented middleware.
 	 * 
-	 * @param Matches $matches Route matches
 	 * @param Closure $final Controller action
 	 * @return mixed
 	 */
-	public function run( Matches $matches, Closure $final ): mixed
+	public function run( Closure $final ): mixed
 	{
-		// boot methods can decide whether to move the request forward or to fail
-		// so we will pack it how the process of moving forward is performed
-		$next = fn() => isset( $this->next )
-			// boot method called this closure and
-			// there is another middleware after this
-			// we are gonna call the next middleware
-			? $this->next->run( $matches, $final )
+		// handle methods can decide whether to approve or reject the request
+		// so, we will explain how the process of moving forward is performed
+		return ( new $this->middleware )->handle( function() use ( $final )
+		{
+			if( isset( $this->next ))
+			{
+				// handle method already called this closure and
+				// there is another middleware after this one,
+				// so we are gonna call the next middleware
+				return $this->next->run( $final );
+			}
+
 			// we consumed all the middlewares and still we
 			// are here so we should call the controller action
-			: $final();
-		
-		return ( new $this->middleware )->handle( $next, $matches );
+			return $final();
+		});
 	}
 }
