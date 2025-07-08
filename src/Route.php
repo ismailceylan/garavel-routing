@@ -256,7 +256,7 @@ class Route
 	 */
 	public function fullyQualifiedControllerNS( string $localControllerName ): string
 	{
-		$ns = 'app\Http\Controllers';
+		$ns = 'App\Http\Controllers';
 		$ns = $this->namespace
 			? "$ns\\$this->namespace\\"
 			: "$ns\\";
