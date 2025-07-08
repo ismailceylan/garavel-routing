@@ -54,7 +54,7 @@ class RouteCollection
 		foreach( $this->routes as $route )
 		{
 			$match = $route->match(
-				$request->path() ?: '/'
+				$request->path()
 			);
 
 			// if route matches with requested path
