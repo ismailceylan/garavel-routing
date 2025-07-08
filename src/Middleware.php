@@ -63,6 +63,6 @@ class Middleware
 			// are here so we should call the controller action
 			: $final();
 		
-		return ( new $this->middleware )->boot( $next, $matches );
+		return ( new $this->middleware )->handle( $next, $matches );
 	}
 }

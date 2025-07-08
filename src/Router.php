@@ -254,12 +254,12 @@ class Router
 		foreach( $middlewares as $mw )
 		{
 			// if middleware points to a middleware group
-			if( array_key_exists( $mw, Kernel::$groupedMiddlewares ))
+			if( array_key_exists( $mw, Kernel::$middlewareGroups ))
 			{
 				$stack =
 				[
 					...$stack,
-					...$this->resolveMiddlewares( Kernel::$groupedMiddlewares[ $mw ])
+					...$this->resolveMiddlewares( Kernel::$middlewareGroups[ $mw ])
 				];
 			}
 			else
